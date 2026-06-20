@@ -64,6 +64,21 @@ const DEMO = {
   }
 };
 
+// 名称 → 代号映射（支持按店名查询）
+var DEMO_BY_NAME = {
+  '星恒健身工作室': '111',
+  '星恒健身': '111',
+  '力美健身俱乐部': '222',
+  '力美健身': '222'
+};
+
+// 虚假历史查询记录
+var FAKE_HISTORY = [
+  { name: '一兆韦德健身', time: '2分钟前', code: null },
+  { name: '星恒健身工作室', time: '18分钟前', code: '111' },
+  { name: '力美健身俱乐部', time: '42分钟前', code: '222' }
+];
+
 // ═══════════════════════════════════════════
 // 查询逻辑
 // ═══════════════════════════════════════════
@@ -71,6 +86,12 @@ const DEMO = {
 /** 快捷查询：填入代号并触发搜索 */
 function quickSearch(code) {
   document.getElementById('searchInput').value = code;
+  doSearch();
+}
+
+/** 通过名称查询 */
+function searchByName(name) {
+  document.getElementById('searchInput').value = name;
   doSearch();
 }
 
@@ -87,7 +108,8 @@ function doSearch() {
     return;
   }
 
-  var data = DEMO[input];
+  // 先按代号查，再按名称查
+  var data = DEMO[input] || DEMO[DEMO_BY_NAME[input]];
   if (!data) {
     empty.style.display = 'none';
     empty.classList.remove('show');
@@ -185,6 +207,19 @@ function render(d) {
 
     '<div class="disclaimer">' +
       '<strong>&#9888;&#65039; 免责声明</strong>：本查询结果仅为基于公开数据的风险参考，不构成对商户安全性的担保或法律意见。评分数据均来自法定公开平台，可独立验证。办卡请保留合同与付款凭证，遇纠纷请拨打 <strong>12315</strong>。' +
+    '</div>' +
+
+    // 虚假历史查询记录
+    '<div class="history-section">' +
+      '<h3>&#128337; 最近查询</h3>' +
+      '<div class="history-list">' +
+        FAKE_HISTORY.map(function(h) {
+          return '<div class="history-item" onclick="searchByName(\'' + h.name + '\')">' +
+            '<span class="history-name">' + h.name + '</span>' +
+            '<span class="history-time">' + h.time + '</span>' +
+          '</div>';
+        }).join('') +
+      '</div>' +
     '</div>';
 
   // 环形进度条动画
