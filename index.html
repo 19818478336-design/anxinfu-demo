@@ -8,66 +8,123 @@
 </head>
 <body>
 
-<!-- Top bar -->
-<div class="topbar">
+<!-- 顶部导航 -->
+<header class="topbar">
   <div class="brand">
     <div class="icon">安</div>
     <span class="name">安心付</span>
   </div>
+  <nav class="topbar-nav">
+    <a href="#search">查询</a>
+    <a href="#districts">城区</a>
+    <a href="#about">关于</a>
+  </nav>
   <div class="demo-tag">演示模式</div>
-</div>
+</header>
 
-<!-- Hero + Search -->
-<div class="hero">
-  <h1>办卡前查一查，<em>安心</em>再付钱</h1>
-  <p class="tagline">聚合四大公开数据源，输入商户名称即可查看预付卡风险评分</p>
-
-  <div class="search-wrap">
-    <div class="search-row">
-      <input type="text" id="searchInput" placeholder="输入商户名称或统一社会信用代码" autofocus>
-      <button onclick="doSearch()">查询风险</button>
+<!-- 首屏 Hero -->
+<section class="hero" id="search">
+  <div class="hero-content">
+    <span class="hero-badge">聚合四大公开数据源</span>
+    <h1>办卡前查一查<br><em>安心</em>再付钱</h1>
+    <p class="tagline">输入商户名称，30 秒内获取预付卡风险评分——帮你识别跑路风险</p>
+    <div class="search-wrap">
+      <div class="search-row">
+        <span class="search-icon">🔍</span>
+        <input type="text" id="searchInput" placeholder="输入商户名称或统一社会信用代码" autofocus>
+        <button onclick="doSearch()">查询风险</button>
+      </div>
+      <div class="search-hint">
+        <span>试试：</span>
+        <span class="hint-chip" onclick="quickSearch('111')">星恒健身</span>
+        <span class="hint-chip" onclick="quickSearch('333')">味源餐饮</span>
+        <span class="hint-chip" onclick="quickSearch('666')">力美健身</span>
+        <span class="hint-chip" onclick="quickSearch('777')">真爱婚介</span>
+      </div>
     </div>
-    <div class="search-hint">
-      演示查询：
-      <span onclick="quickSearch('111')">代号 111</span>
-      <span onclick="quickSearch('222')">代号 222</span>
-    </div>
   </div>
-</div>
+</section>
 
-<!-- Stats strip -->
-<div class="stats-strip">
+<!-- 数据统计条 -->
+<section class="stats-strip">
   <div class="stat-card">
-    <div class="num">3万+</div>
-    <div class="label">2024年上海预付卡投诉量</div>
-    <div class="src">来源：上海市市场监管局</div>
+    <div class="stat-icon">📊</div>
+    <div class="stat-num">3万+</div>
+    <div class="stat-label">2024 年上海预付卡投诉量</div>
+    <div class="stat-src">来源：上海市市场监管局</div>
   </div>
   <div class="stat-card">
-    <div class="num safe">47%</div>
-    <div class="label">发卡商户处于高风险区间</div>
-    <div class="src">未备案 + 工商异常的商户占比</div>
+    <div class="stat-icon">⚠️</div>
+    <div class="stat-num warn">47%</div>
+    <div class="stat-label">发卡商户处于高风险区间</div>
+    <div class="stat-src">未备案 + 工商异常商户占比</div>
   </div>
   <div class="stat-card">
-    <div class="num" style="background: linear-gradient(135deg, #F39C12, #E67E22); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">¥4,200</div>
-    <div class="label">健身行业单笔平均损失金额</div>
-    <div class="src">来源：12315消费投诉数据</div>
+    <div class="stat-icon">💸</div>
+    <div class="stat-num loss">¥4,200</div>
+    <div class="stat-label">健身行业单笔平均损失</div>
+    <div class="stat-src">来源：12315 消费投诉数据</div>
   </div>
-</div>
+</section>
 
-<!-- Result area -->
-<div class="result-area">
-  <!-- Empty state -->
+<!-- 搜索结果区 -->
+<main class="result-area">
   <div class="result-card show" id="emptyState">
     <div class="empty-state">
-      <div class="shield">🛡️</div>
+      <div class="empty-shield">
+        <svg width="64" height="64" viewBox="0 0 64 64" fill="none">
+          <path d="M32 4L8 14v18c0 15.5 10.2 30 24 33.5C45.8 62 56 47.5 56 32V14L32 4z" fill="#E8F0F8" stroke="#2980B9" stroke-width="2"/>
+          <circle cx="32" cy="30" r="8" fill="#2980B9" opacity="0.2"/>
+          <path d="M29 30l2 2 4-4" stroke="#2980B9" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </div>
       <h3>输入商户名称开始查询</h3>
-      <p>系统将自动从上海市预付卡备案平台、国家企业信用信息公示系统、中国裁判文书网、12315 四个公开数据源聚合信息，生成风险评分</p>
+      <p>系统自动聚合上海市预付卡备案平台、国家企业信用信息公示系统、中国裁判文书网、12315 四大公开数据源，生成风险评分与证据链</p>
     </div>
   </div>
-
-  <!-- Search result -->
   <div class="result-card" id="resultCard"></div>
-</div>
+</main>
+
+<!-- 城区风险概览 -->
+<section class="district-section" id="districts">
+  <div class="section-header">
+    <h2>🏙️ 上海各区预付卡风险概览</h2>
+    <p>基于公开数据的各行政区发卡商户风险分布统计</p>
+  </div>
+  <div class="district-legend">
+    <span><span class="dot red"></span> 高风险</span>
+    <span><span class="dot yellow"></span> 需关注</span>
+    <span><span class="dot green"></span> 低风险</span>
+  </div>
+  <div id="districtOverview" class="district-grid"></div>
+  <p class="district-note">* 基于备案平台与工商数据交叉统计，定期更新</p>
+</section>
+
+<!-- 页脚 -->
+<footer class="footer" id="about">
+  <div class="footer-content">
+    <div class="footer-brand">
+      <div class="footer-icon">安</div>
+      <span>安心付</span>
+    </div>
+    <div class="footer-links">
+      <div class="footer-col">
+        <strong>数据来源</strong>
+        <span>上海市预付卡备案平台</span>
+        <span>国家企业信用信息公示系统</span>
+        <span>中国裁判文书网</span>
+        <span>12315 消费投诉公示</span>
+      </div>
+      <div class="footer-col">
+        <strong>免责声明</strong>
+        <span>本平台输出仅为基于公开数据的</span>
+        <span>风险参考信息，不构成对商户的</span>
+        <span>安全担保或法律判断</span>
+      </div>
+    </div>
+    <p class="footer-copy">© 2026 安心付 · 预付消费商户风险查询平台</p>
+  </div>
+</footer>
 
 <script src="js/app.js"></script>
 </body>
